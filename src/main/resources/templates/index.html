@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index Page</title>
+</head>
+<body>
+    <p id="index">这里是首页</p>
+
+
+
+    <!-- jquery-3.5.1.js -->
+    <script th:src="@{/lib/jquery/jquery-3.5.1.js}"></script>
+    <script>
+        window.onload = function() {
+            $('#index').text('jquery test');
+        }
+    </script>
+</body>
+</html>
