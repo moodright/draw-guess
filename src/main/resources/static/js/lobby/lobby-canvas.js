@@ -39,7 +39,7 @@ function mouseMoveAction(e) {
         Y1 = e.offsetY;
         flag++;
         // 向服务器发送绘画消息
-        sendMessage(X, Y, X1, Y1);
+        sendCoordinateMessage(X, Y, X1, Y1);
         drawLine(X, Y, X1, Y1);
     }
 }
@@ -57,15 +57,15 @@ function mouseUpAction(e) {
  */
 function drawLine(x, y, x1, y1) {
     // 开启新路径
-    if(flag) {
-        context.beginPath();
-    }
+    context.beginPath();
     // 移动画笔初始位置
     context.moveTo(x, y);
     // 移动画笔的结束位置
     context.lineTo(x1, y1);
     // 开始绘制
     context.stroke();
+    // 闭合路径
+    context.closePath();
     // 鼠标按下移动时更新起始坐标
     if(flag != 0) {
         X = X1;
@@ -78,6 +78,8 @@ function drawLine(x, y, x1, y1) {
  */
 function clearCanvas() {
     context.clearRect(0, 0, 600, 500);
+    // 向服务器发送清空画板信息
+    sendClearBoardMessage();
 }
 
 /**
@@ -93,7 +95,10 @@ function colorChoose(num) {
     }else if (color === 2) {
         context.strokeStyle = "skyblue";
     }
+    // 向服务器发送颜色信息
+    sendColorMessage(num);
 }
+
 /**
  * 画笔粗细选择
  */
@@ -101,4 +106,6 @@ function lineWidthChoose(num) {
     lineWidth = num;
     // 更新画笔宽度
     context.lineWidth = lineWidth;
+    // 向服务器发送宽度信息
+    sendLineWidthMessage(num);
 }

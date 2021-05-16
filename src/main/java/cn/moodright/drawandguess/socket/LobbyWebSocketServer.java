@@ -2,8 +2,9 @@ package cn.moodright.drawandguess.socket;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
+import cn.moodright.drawandguess.entity.CanvasDTO.Message;
+import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Component;
-
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -65,17 +66,12 @@ public class LobbyWebSocketServer {
     /**
      * 接收到客户端消息调用方法
      * @param session 客户端会话
-     * @param coordinate Canvas 画板的坐标
+     * @param message 传输的消息
      */
     @OnMessage
-    public void onMessage(Session session, String coordinate) throws IOException {
-        log.info("用户：" + username + " 向服务器发送了信息：" + coordinate);
-        // 群发消息（绘画者除外）
-        for(Map.Entry<String, LobbyWebSocketServer> entry : lobbyWebSocketMap.entrySet()) {
-            if(!entry.getKey().equals(username)) {
-                entry.getValue().sendMessage(coordinate);
-            }
-        }
+    public void onMessage(Session session, String message) throws IOException {
+        log.info("用户：" + username + " 向服务器发送了信息：" + message);
+        broadcastMessageExceptMyself(message);
     }
 
     @OnError
@@ -86,11 +82,23 @@ public class LobbyWebSocketServer {
     /**
      * 实现服务器主动推送消息
      * @param message 消息
-     * @throws IOException
      */
     public void sendMessage(String message) throws IOException {
         this.session.getBasicRemote().sendText(message);
     }
+
+    /**
+     * 服务器广播消息（绘画者除外）
+     * @param message 消息
+     */
+    public void broadcastMessageExceptMyself(String message) throws IOException {
+        for (Map.Entry<String, LobbyWebSocketServer> entry : lobbyWebSocketMap.entrySet()) {
+            if(!entry.getKey().equals(username)) {
+                entry.getValue().sendMessage(message);
+            }
+        }
+    }
+
 
 
 
