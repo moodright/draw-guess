@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lobby</title>
+    <!-- jquery-3.5.1.js -->
+    <script src="/lib/jquery/jquery-3.5.1.js"></script>
+    <!-- lobby-canvas.js -->
+    <script src="js/lobby/lobby-canvas.js"></script>
+    <!-- lobby-websocket.js -->
+    <script src="js/lobby/lobby-websocket.js"></script>
+    <!-- lobby.css -->
+    <link rel="stylesheet" type="text/css" href="css/lobby.css" />
+</head>
+<body>
+    <div class=left-main>
+        <!-- 选择颜色 -->
+        <div class="color-choose">
+            <div class="red-block" onclick="colorChoose(0)"></div>
+            <div class="green-block" onclick="colorChoose(1)"></div>
+            <div class="skyblue-block" onclick="colorChoose(2)"></div>
+        </div>
+        <!-- 选择画笔粗细 -->
+        <div class="penwidth-choose">
+            <div class="slim">
+                <div class="slim-width" onclick="lineWidthChoose(2)"></div>
+            </div>
+            <div class="medium">
+                <div class="medium-width" onclick="lineWidthChoose(4)"></div>
+            </div>
+            <div class="large">
+                <div class="large-width" onclick="lineWidthChoose(8)"></div>
+            </div>
+        </div>
+        <!-- 清除画板 -->
+        <div class="function-section">
+            <input type="button" value="清除画板" onclick="clearCanvas()"><br>
+            <input id="socket-username" type="text" placeholder="请输入连接的用户名">
+            <input type="button" value="开启WebSocket连接" onclick="openWebSocket()">
+        </div>
+    </div>
+    <!-- 画板 -->
+    <div id="board">
+        <canvas id="myCanvas" width="600" height="500"></canvas>
+    </div>
+</body>
+</html>
