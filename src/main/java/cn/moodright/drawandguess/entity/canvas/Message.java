@@ -1,4 +1,4 @@
-package cn.moodright.drawandguess.entity.CanvasDTO;
+package cn.moodright.drawandguess.entity.canvas;
 
 /**
  * 传输消息基础实体类

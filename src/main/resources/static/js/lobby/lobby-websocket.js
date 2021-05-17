@@ -44,6 +44,7 @@ function openWebSocket() {
             if(message.transferObjectName === 'lineWidth') {
                 context.lineWidth = message.lineWidth;
             }
+            console.log(message.toString());
         }
         // 关闭连接回调函数
         webSocket.onclose = function() {

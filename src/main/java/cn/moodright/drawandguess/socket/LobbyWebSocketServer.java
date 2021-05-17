@@ -2,8 +2,7 @@ package cn.moodright.drawandguess.socket;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import cn.moodright.drawandguess.entity.CanvasDTO.Message;
-import com.alibaba.fastjson.JSON;
+import cn.moodright.drawandguess.logic.GameProcess;
 import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -35,7 +34,7 @@ public class LobbyWebSocketServer {
      * @param username 建立连接的客户端用户名
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("username")String username) {
+    public void onOpen(Session session, @PathParam("username")String username) throws IOException {
         this.session = session;
         this.username = username;
         // 判断是否已建立同名的连接
@@ -48,6 +47,10 @@ public class LobbyWebSocketServer {
             addOnlineCount();
         }
         log.info("用户：" + username + " 连接, 当前在线人数为：" + getOnlineCount());
+        if(getOnlineCount() == 2) {
+            // 游戏开始
+            GameProcess.gameStart();
+        }
     }
 
     /**
@@ -96,6 +99,16 @@ public class LobbyWebSocketServer {
             if(!entry.getKey().equals(username)) {
                 entry.getValue().sendMessage(message);
             }
+        }
+    }
+
+    /**
+     * 服务器广播消息
+     * @param message 消息
+     */
+    public static void broadcastMessage(String message) throws IOException {
+        for (Map.Entry<String, LobbyWebSocketServer> entry : lobbyWebSocketMap.entrySet()) {
+            entry.getValue().sendMessage(message);
         }
     }
 
