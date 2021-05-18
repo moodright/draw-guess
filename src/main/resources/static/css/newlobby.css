@@ -1,0 +1,381 @@
+html, body {
+    font-family: 'Muli', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #c8e2f9;
+}
+.main {
+    width: 1550px;
+    height: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: start;
+}
+.main .left-main {
+    width: 20%;
+    height: 100%;
+}
+.left-main .top-playerList {
+    height: 65%;
+    width: 90%;
+    margin: 10px auto 10px auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow: auto;
+}
+/* 设置滚动条样式 */
+/* 滚动栏宽度 */
+.top-playerList::-webkit-scrollbar {
+    width: 7px;
+}
+/* 滚动栏滑块 */
+.top-playerList::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #3798e8;
+}
+/* 滚动栏轨道 */
+.top-playerList::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: #eeeeee;
+}
+.top-playerList .player-info {
+    width: 90%;
+    height: 120px;
+    display: flex;
+    justify-content: start;
+    margin: 0 auto;
+    border-bottom: 1px solid #DCDFE6;
+}
+.player-info .left-avatar {
+    width: 40%;
+    height: 100%;
+}
+.player-info .left-avatar .avatar {
+    display: block;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 20px auto 0 auto;
+    border: 1px solid #99a1ba;
+}
+.player-info .right-info {
+    width: 60%;
+    height: 100%;
+}
+.right-info .username {
+    width: 100%;
+    height: 50px;
+    font-size: 19px;
+    color: #fb7299;
+    font-weight: bold;
+    position: relative;
+    top: 20px;
+}
+.right-info .rank-info {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: start;
+}
+.rank-info .credit {
+    width: 60%;
+    height: 90%;
+    font-size: 18px;
+}
+.rank-info .credit i {
+    margin-top: 20px;
+    margin-right: 10px;
+    color: #ffb900;
+}
+.rank-info .painter-icon {
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    font-size: 40px;
+    color: #c8e2f9;
+    border-radius: 50%;
+    border: 2px solid #c8e2f9;
+    padding-top: 2px;
+    padding-right: 2px;
+}
+.left-main .bottom-functionButtonList {
+    height: 150px;
+    width: 90%;
+    line-height: 150px;
+    margin: 20px auto 10px auto;
+    background: white;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #222;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.bottom-functionButtonList:hover {
+    background: #409EFF;
+    color: white;
+}
+
+.main .middle-main {
+    width: 55%;
+    height: 100%;
+}
+.middle-main .board {
+    height: 65%;
+    width: 100%;
+    margin: 10px auto 10px auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.middle-main .board-tools {
+    width: 100%;
+    height: 150px;
+    margin: 20px auto 10px auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: flex;
+    justify-content: start;
+}
+.board-tools .clear-board {
+    margin-top: 10px;
+    height: 130px;
+    width: 20%;
+    border-right: 2px solid #dcdfe6;
+}
+.board-tools .clear-board .button {
+    margin: 0 auto;
+    width: 135px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: #409eff;
+    font-size: 15px;
+    border-radius: 10px;
+    color: #222;
+    font-weight: bold;
+    cursor: pointer;
+}
+.board-tools .clear-board .button:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    color: white;
+}
+
+.board-tools .line-choose {
+    margin-top: 10px;
+    height: 130px;
+    width: 30%;
+    border-right: 2px solid #dcdfe6;
+}
+.line-choose .title{
+    height: 40px;
+    width: 100%;
+    line-height: 40px;
+    color: #222;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.line-choose .width-option {
+    margin-top: 10px;
+    width: 100%;
+    height: 85px;
+    display: flex;
+    justify-content: space-around;
+}
+.width-option .option {
+    height: 100%;
+    width: 33%;
+}
+.width-option .option .normal {
+    margin: 0 auto;
+    width: 30px;
+    height: 30px;
+    background: black;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.width-option .option .medium {
+    margin: 0 auto;
+    width: 40px;
+    height: 40px;
+    background: black;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.width-option .option .large {
+    margin: 0 auto;
+    width: 50px;
+    height: 50px;
+    background: black;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.board-tools .color-choose {
+    margin-top: 10px;
+    height: 130px;
+    width: 50%;
+}
+.color-choose .title {
+    height: 40px;
+    width: 100%;
+    line-height: 40px;
+    color: #222;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.color-choose .color-option {
+    width: 100%;
+    height: 95px;
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+}
+.color-choose .color-option div {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 10px;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+
+
+.main .right-main {
+    width: 25%;
+    height: 100%;
+}
+.right-main .notification {
+    width: 90%;
+    height: 60px;
+    margin-top: 10px;
+    margin-left: 10px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: flex;
+    justify-content: start;
+}
+.notification .clock {
+    width: 50%;
+    height: 80%;
+    margin-top: 5px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 50px;
+    border-right: 1px solid #dcdfe6;
+}
+.notification .clock i {
+    margin-right: 10px;
+    color: #222;
+}
+.right-main .prompt {
+    width: 50%;
+    height: 100%;
+}
+.prompt .word-type {
+    height: 50%;
+    width: 100%;
+    text-align: center;
+    line-height: 30px;
+    color: #000000;
+}
+.prompt .word-length {
+    height: 50%;
+    width: 100%;
+    text-align: center;
+    line-height: 30px;
+    color: #000000;
+}
+
+.right-main .chat {
+    width: 90%;
+    height: 450px;
+    margin-top: 10px;
+    margin-left: 10px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow: auto;
+}
+/* 设置滚动条样式 */
+/* 滚动栏宽度 */
+.chat::-webkit-scrollbar {
+    width: 7px;
+}
+/* 滚动栏滑块 */
+.chat::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #3798e8;
+}
+/* 滚动栏轨道 */
+.chat::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: #eeeeee;
+}
+.chat .single-chat {
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+}
+.single-chat .username {
+    margin-left: 10px;
+    color: #fb7299;
+}
+
+.right-main .send-message {
+    width: 90%;
+    height: 150px;
+    margin-top: 20px;
+    margin-left: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.send-message .input-bar {
+    height: 150px;
+    width: 70%;
+}
+.input-bar textarea {
+    width: 240px;
+    height: 138px;
+    resize: none;
+    padding: 5px 7px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: 1px solid #bfcbd9;
+    outline: none;
+    font-size: 17px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.input-bar textarea:hover {
+    border-color: #20a0ff;
+}
+.send-message .send-button {
+    height: 148px;
+    width: 85px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 1px solid #bfcbd9;
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    text-align: center;
+    line-height: 148px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #222;
+    cursor: pointer;
+
+}
+.send-button:hover {
+    border-color: #20a0ff;
+    background: #409eff;
+    color: white;
+}
+
+

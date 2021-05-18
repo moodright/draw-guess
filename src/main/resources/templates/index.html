@@ -2,19 +2,49 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Index Page</title>
+    <title>首页</title>
+    <!-- index.css -->
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <!-- jquery-3.5.1.js -->
+    <script src="/lib/jquery/jquery-3.5.1.js"></script>
+    <!-- index-base.js -->
+    <script src="/js/index/index-base.js"></script>
+    <!-- google font -->
+    <link href="https://fonts.font.im/css?family=Kirang+Haerang|Muli" rel="stylesheet">
 </head>
 <body>
-    <p id="index">这里是首页</p>
+    <div class="main">
+        <div class="header">
+            Draw, Guess, Win
+        </div>
+        <div class="center">
+            <div class="left-center">
+                <div class="title">快速开始</div>
+                <div class="input-section">
+                    <div class="input-avatar">
+                        <img class="avatar" th:src="@{/image/avatar.png}" title="设置头像" />
+                    </div>
+                    <div class="input-bar">
+                        <div class="input-title">昵称：</div>
+                        <input id="username" class="input-content" type="text">
+                    </div>
+                    <div class="input-bar">
+                        <div class="input-title">口令：</div>
+                        <input class="input-content" type="text">
+                    </div>
+                    <div class="confirm">
+                        <div class="confirm-button" onclick="toLobby()">进入游戏</div>
+                    </div>
 
+                </div>
+            </div>
+            <div class="right-center">
 
-
-    <!-- jquery-3.5.1.js -->
-    <script th:src="@{/lib/jquery/jquery-3.5.1.js}"></script>
-    <script>
-        window.onload = function() {
-            $('#index').text('jquery test');
-        }
-    </script>
+            </div>
+        </div>
+        <div class="footer">
+            你画我猜 | powered by @moodright
+        </div>
+    </div>
 </body>
 </html>

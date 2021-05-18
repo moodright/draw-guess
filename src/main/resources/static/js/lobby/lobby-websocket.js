@@ -3,6 +3,14 @@ var username; // 连接时请求的用户名
 var webSocketUrl; // 连接时请求的url
 
 /**
+ * 页面加载完成后自动建立连接
+ */
+$(function() {
+    openWebSocket();
+})
+
+
+/**
  * 开启WebSocket连接
  */
 function openWebSocket() {
@@ -44,9 +52,15 @@ function openWebSocket() {
             if(message.transferObjectName === 'lineWidth') {
                 context.lineWidth = message.lineWidth;
             }
+            // 同步绘画者
             if(message.transferObjectName === 'whoIsPainter') {
                 console.log(message.painter);
             }
+            // 同步接收的单词
+            if(message.transferObjectName === 'word') {
+                console.log(message.word);
+            }
+
             // console.log(message.toString());
         }
         // 关闭连接回调函数

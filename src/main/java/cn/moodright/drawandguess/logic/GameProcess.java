@@ -3,6 +3,7 @@ package cn.moodright.drawandguess.logic;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import cn.moodright.drawandguess.entity.canvas.PainterMessage;
+import cn.moodright.drawandguess.entity.canvas.WordMessage;
 import cn.moodright.drawandguess.entity.game.Settings;
 import cn.moodright.drawandguess.socket.LobbyWebSocketServer;
 import com.alibaba.fastjson.JSON;
@@ -27,32 +28,36 @@ public class GameProcess {
      * 回合开始
      */
     public static void roundStart() throws IOException {
-        // 发送该回合单词
-        String word = sendWord();
+        // 确定该回合绘画者
+        String username = GameProcess.whoIsPainter();
+        // 向绘画者发送该回合单词
+        String word = sendWordToPainter(username);
         // 更新该回合单词
         Round.updateCurrentWord(word);
-        // 确定该回合绘画者
-        GameProcess.whoIsPainter();
         // 当前回合定时器
         timer.schedule(new Round(), 0, 1000);
     }
 
     /**
      * 发送单词
+     * @param painterUsername 绘画者用户名
      * @return 词典中取出的字符串
      */
-    public static String sendWord() throws IOException {
+    public static String sendWordToPainter(String painterUsername) throws IOException {
         // 随机选择词典单词
         String word = Settings.WORD[new Random().nextInt(Settings.WORD.length)];
-        // 广播发送该词
-        LobbyWebSocketServer.broadcastMessage(JSON.toJSONString(word));
+        // 发送该单词至绘画者
+        LobbyWebSocketServer.sendMessageToSpecifiedUser(
+                JSON.toJSONString(new WordMessage("word", painterUsername, word)),
+                painterUsername);
         return word;
     }
 
     /**
      * 确定绘画者
+     * @return 绘画者用户名
      */
-    public static void whoIsPainter() throws IOException {
+    public static String whoIsPainter() throws IOException {
         // 顺序选择绘画者
         for (int i = 0; i < playerList.size(); i++) {
             // 若该用户为非绘画者，则命中，修改判断字段
@@ -77,9 +82,11 @@ public class GameProcess {
                     playerMap.replaceAll((k, v) -> false);
                 }
                 // 停止选择
-                return;
+                return playerList.get(i);
             }
         }
+        log.info("异常情况发生，没有选中合适的绘画者！");
+        return "";
     }
 
     /**

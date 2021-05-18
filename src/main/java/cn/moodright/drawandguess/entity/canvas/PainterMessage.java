@@ -10,6 +10,9 @@ public class PainterMessage extends BaseMessage {
      */
     private boolean painter;
 
+    /**
+     * @param transferObjectName whoIsPainter
+     */
     public PainterMessage(String transferObjectName, String username, boolean painter) {
         super(transferObjectName, username);
         this.painter = painter;

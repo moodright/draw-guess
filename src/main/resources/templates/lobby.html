@@ -6,11 +6,11 @@
     <!-- jquery-3.5.1.js -->
     <script src="/lib/jquery/jquery-3.5.1.js"></script>
     <!-- lobby-canvas.js -->
-    <script src="js/lobby/lobby-canvas.js"></script>
+    <script src="/js/lobby/lobby-canvas.js"></script>
     <!-- lobby-websocket.js -->
-    <script src="js/lobby/lobby-websocket.js"></script>
+    <script src="/js/lobby/lobby-websocket.js"></script>
     <!-- lobby.css -->
-    <link rel="stylesheet" type="text/css" href="css/lobby.css" />
+    <link rel="stylesheet" type="text/css" href="/css/lobby.css" />
 </head>
 <body>
     <div class=left-main>
@@ -35,8 +35,7 @@
         <!-- 清除画板 -->
         <div class="function-section">
             <input type="button" value="清除画板" onclick="clearCanvas()"><br>
-            <input id="socket-username" type="text" placeholder="请输入连接的用户名">
-            <input type="button" value="开启WebSocket连接" onclick="openWebSocket()">
+            <input id="socket-username" type="text" placeholder="请输入连接的用户名" th:value="${username}">
         </div>
     </div>
     <!-- 画板 -->

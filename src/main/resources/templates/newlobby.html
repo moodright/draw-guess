@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>更新后的游戏大厅</title>
+    <!-- newlobby.css -->
+    <link rel="stylesheet" type="text/css" href="/css/newlobby.css" />
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" type="text/css" href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" />
+    <!-- jquery-3.5.1.js -->
+    <script src="/lib/jquery/jquery-3.5.1.js"></script>
+    <!-- google font -->
+    <link href="https://fonts.font.im/css?family=Kirang+Haerang|Muli" rel="stylesheet">
+</head>
+<body>
+    <div class="main">
+        <div class="left-main">
+            <div class="top-playerList">
+                <div class="player-info">
+                    <div class="left-avatar">
+                        <img class="avatar" src="/image/avatar.png" title="moodright"/>
+                    </div>
+                    <div class="right-info">
+                        <div class="username">
+                            moodright
+                        </div>
+                        <div class="rank-info">
+                            <div class="credit">
+                                <i class="fa fa-trophy"></i><span>50</span>
+                            </div>
+                            <div class="painter-icon">
+                                <i class="fa fa-paint-brush"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="player-info">
+                    <div class="left-avatar">
+                        <img class="avatar" src="/image/avatar.png" title="moodright"/>
+                    </div>
+                    <div class="right-info">
+                        <div class="username">
+                            moodright
+                        </div>
+                        <div class="rank-info">
+                            <div class="credit">
+                                <i class="fa fa-trophy"></i><span>50</span>
+                            </div>
+                            <div class="painter-icon">
+                                <i class="fa fa-paint-brush"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="player-info">
+                    <div class="left-avatar">
+                        <img class="avatar" src="/image/avatar.png" title="moodright"/>
+                    </div>
+                    <div class="right-info">
+                        <div class="username">
+                            moodright
+                        </div>
+                        <div class="rank-info">
+                            <div class="credit">
+                                <i class="fa fa-trophy"></i><span>50</span>
+                            </div>
+                            <div class="painter-icon">
+                                <i class="fa fa-paint-brush"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="player-info">
+                    <div class="left-avatar">
+                        <img class="avatar" src="/image/avatar.png" title="moodright"/>
+                    </div>
+                    <div class="right-info">
+                        <div class="username">
+                            moodright
+                        </div>
+                        <div class="rank-info">
+                            <div class="credit">
+                                <i class="fa fa-trophy"></i><span>50</span>
+                            </div>
+                            <div class="painter-icon">
+                                <i class="fa fa-paint-brush"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="player-info">
+                    <div class="left-avatar">
+                        <img class="avatar" src="/image/avatar.png" title="moodright"/>
+                    </div>
+                    <div class="right-info">
+                        <div class="username">
+                            moodright
+                        </div>
+                        <div class="rank-info">
+                            <div class="credit">
+                                <i class="fa fa-trophy"></i><span>50</span>
+                            </div>
+                            <div class="painter-icon">
+                                <i class="fa fa-paint-brush"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="player-info">
+                    <div class="left-avatar">
+                        <img class="avatar" src="/image/avatar.png" title="moodright"/>
+                    </div>
+                    <div class="right-info">
+                        <div class="username">
+                            moodright
+                        </div>
+                        <div class="rank-info">
+                            <div class="credit">
+                                <i class="fa fa-trophy"></i><span>50</span>
+                            </div>
+                            <div class="painter-icon">
+                                <i class="fa fa-paint-brush"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-functionButtonList">准备</div>
+        </div>
+        <div class="middle-main">
+            <div class="board">
+                <canvas id="myCanvas" width="852" height="520"></canvas>
+            </div>
+            <div class="board-tools">
+                <div class="clear-board">
+                    <div class="button">清空画板</div>
+                </div>
+                <div class="line-choose">
+                    <div class="title">选取线条粗细</div>
+                    <div class="width-option">
+                        <div class="option">
+                            <div class="normal"></div>
+                        </div>
+                        <div class="option">
+                            <div class="medium"></div>
+                        </div>
+                        <div class="option">
+                            <div class="large"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="color-choose">
+                    <div class="title">选取画笔颜色</div>
+                    <div class="color-option">
+                        <div class="option" style="background: #d0010c"></div>
+                        <div class="option" style="background: #ec7012"></div>
+                        <div class="option" style="background: #f19913"></div>
+                        <div class="option" style="background: #fdf31c"></div>
+                        <div class="option" style="background: #cadf1b"></div>
+                        <div class="option" style="background: #97c71e"></div>
+                        <div class="option" style="background: #019218"></div>
+                        <div class="option" style="background: #029679"></div>
+                        <div class="option" style="background: #0195a2"></div>
+                        <div class="option" style="background: #0097cb"></div>
+                        <div class="option" style="background: #0199f1"></div>
+                        <div class="option" style="background: #007dd3"></div>
+                        <div class="option" style="background: #0161b3"></div>
+                        <div class="option" style="background: #004594"></div>
+                        <div class="option" style="background: #000268"></div>
+                        <div class="option" style="background: #000267"></div>
+                        <div class="option" style="background: #51015c"></div>
+                        <div class="option" style="background: #7a014a"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-main">
+            <div class="notification">
+                <div class="clock">
+                    <i class="fa fa-clock-o"></i><span id="countdown">60</span>
+                </div>
+                <div class="prompt">
+                    <div class="word-type">词汇提示类型</div>
+                    <div class="word-length">两个字</div>
+                </div>
+            </div>
+            <div class="chat">
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+                <div class="single-chat">
+                    <span class="username">moodright：</span><span>这里是我的消息</span>
+                </div>
+
+            </div>
+            <div class="send-message">
+                <div class="input-bar">
+                    <textarea></textarea>
+                </div>
+                <div class="send-button">
+                    发送
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+</html>
