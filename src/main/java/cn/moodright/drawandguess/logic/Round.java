@@ -14,9 +14,9 @@ import java.util.TimerTask;
  */
 public class Round extends TimerTask {
     private static final Log log = LogFactory.get();
-    // 游戏回合剩余时间倒计时
+    // 回合剩余时间倒计时
     private int roundCountDown = Settings.ROUND_COUNT_DOWN;
-    // 游戏总回合数
+    // 总回合数
     private static int roundCount = Settings.ROUND_COUNT;
     // 当前回合单词
     private static String currentWord = null;
@@ -36,7 +36,7 @@ public class Round extends TimerTask {
                     GameProcess.roundStart();
                 }
                 if (roundCount == 0) {
-                    log.info("游戏结束");
+                    log.info("游戏结束，重置游戏资源");
                     // 重置游戏资源
                     resetGameResource();
                 }

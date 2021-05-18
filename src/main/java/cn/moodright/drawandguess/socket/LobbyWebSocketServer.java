@@ -2,14 +2,20 @@ package cn.moodright.drawandguess.socket;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
+import cn.moodright.drawandguess.entity.game.Settings;
 import cn.moodright.drawandguess.logic.GameProcess;
 import org.springframework.stereotype.Component;
+
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * Created by moodright in 2021/5/16
@@ -27,6 +33,8 @@ public class LobbyWebSocketServer {
     private Session session;
     // 客户端连接时的用户名
     private String username;
+    // 客户端连接时的顺序
+    private int order;
 
     /**
      * 建立连接
@@ -37,6 +45,7 @@ public class LobbyWebSocketServer {
     public void onOpen(Session session, @PathParam("username")String username) throws IOException {
         this.session = session;
         this.username = username;
+        this.order = onlineCount;
         // 判断是否已建立同名的连接
         if(lobbyWebSocketMap.containsKey(username)) {
             lobbyWebSocketMap.remove(username);
@@ -47,7 +56,7 @@ public class LobbyWebSocketServer {
             addOnlineCount();
         }
         log.info("用户：" + username + " 连接, 当前在线人数为：" + getOnlineCount());
-        if(getOnlineCount() == 2) {
+        if(getOnlineCount() == Settings.PLAYER_COUNT) {
             // 游戏开始
             GameProcess.gameStart();
         }
@@ -96,6 +105,7 @@ public class LobbyWebSocketServer {
      */
     public void broadcastMessageExceptMyself(String message) throws IOException {
         for (Map.Entry<String, LobbyWebSocketServer> entry : lobbyWebSocketMap.entrySet()) {
+            // 往服务端发送消息的客户端不需要再次接收此消息
             if(!entry.getKey().equals(username)) {
                 entry.getValue().sendMessage(message);
             }
@@ -110,6 +120,44 @@ public class LobbyWebSocketServer {
         for (Map.Entry<String, LobbyWebSocketServer> entry : lobbyWebSocketMap.entrySet()) {
             entry.getValue().sendMessage(message);
         }
+    }
+
+    /**
+     * 服务器向指定客户端发送消息
+     * @param message 消息
+     * @param username 客户端用户名
+     */
+    public static void sendMessageToSpecifiedUser(String message, String username) throws IOException {
+        if(lobbyWebSocketMap.containsKey(username)) {
+            lobbyWebSocketMap.get(username).sendMessage(message);
+            log.info("向用户：" + username + " 发送消息:" + message);
+        }else {
+            log.info("未找到该用户，发送消息失败！");
+        }
+    }
+
+    /**
+     * order默认set方法，用于lobbyWebSocketMap排序
+     */
+    public int getOrder() {
+        return order;
+    }
+
+    /**
+     * 获取客户端用户名列表
+     * @return 客户端用户名列表
+     */
+    public static List<String> getUsernameList() {
+        List<String> usernameSequenceList = new ArrayList<>();
+//        for (Map.Entry<String, LobbyWebSocketServer> entry : lobbyWebSocketMap.entrySet()) {
+//            usernameSequenceList.add(entry.getKey());
+//        }
+        // 根据order字段对map进行排序
+        List<LobbyWebSocketServer> collect = lobbyWebSocketMap.values().stream().sorted(Comparator.comparing(LobbyWebSocketServer::getOrder)).collect(Collectors.toList());
+        for( LobbyWebSocketServer lobbyWebSocketServer : collect) {
+            usernameSequenceList.add(lobbyWebSocketServer.username);
+        }
+        return usernameSequenceList;
     }
 
 

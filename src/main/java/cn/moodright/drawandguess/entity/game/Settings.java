@@ -16,7 +16,7 @@ public class Settings {
     /**
      * 游戏人数
      */
-    public static final int PLAYER_COUNT = 2;
+    public static final int PLAYER_COUNT = 3;
     /**
      * 游戏回合数
      */

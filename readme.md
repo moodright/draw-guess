@@ -6,4 +6,6 @@
  - 定义了游戏变量实体类 drawandguess.entity.game.Settings
  - 定义了游戏过程实体类 drawandguess.logic.GameProcess
  - 实现了回合定时器 drawandguess.logic.Round
+## 2021/5/18
+ - 实现绘画者选择机制 
  
