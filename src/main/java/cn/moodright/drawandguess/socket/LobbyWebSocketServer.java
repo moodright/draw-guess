@@ -2,10 +2,9 @@ package cn.moodright.drawandguess.socket;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import cn.moodright.drawandguess.entity.game.Settings;
-import cn.moodright.drawandguess.logic.GameProcess;
+import cn.moodright.drawandguess.entity.canvas.OnlineMessage;
+import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Component;
-
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -55,11 +54,21 @@ public class LobbyWebSocketServer {
             // 连接数加一
             addOnlineCount();
         }
-        log.info("用户：" + username + " 连接, 当前在线人数为：" + getOnlineCount());
-        if(getOnlineCount() == Settings.PLAYER_COUNT) {
-            // 游戏开始
-            GameProcess.gameStart();
+        // 服务器向建立连接的客户端发送已在线用户的同步信息
+        // 按照用户加入顺序排序
+        List<LobbyWebSocketServer> collect = lobbyWebSocketMap.values().stream().sorted(Comparator.comparing(LobbyWebSocketServer::getOrder)).collect(Collectors.toList());
+        for( LobbyWebSocketServer lobbyWebSocketServer : collect) {
+            sendMessageToSpecifiedUser(JSON.toJSONString(
+                    new OnlineMessage("playerOnline", lobbyWebSocketServer.username)),
+                    this.username);
         }
+
+        log.info("用户：" + username + " 连接, 当前在线人数为：" + getOnlineCount());
+
+//        if(getOnlineCount() == Settings.PLAYER_COUNT) {
+//            // 游戏开始
+//            GameProcess.gameStart();
+//        }
     }
 
     /**

@@ -9,7 +9,6 @@ $(function() {
     openWebSocket();
 })
 
-
 /**
  * 开启WebSocket连接
  */
@@ -22,6 +21,8 @@ function openWebSocket() {
         // 建立连接回调函数
         webSocket.onopen = function() {
             console.log('用户：' + username + ' 连接建立成功！');
+            // 向服务器发送上线信息
+            sendPlayerOnlineMessage(username);
         }
         // 收到服务端消息回调函数
         webSocket.onmessage = function(event) {
@@ -33,19 +34,32 @@ function openWebSocket() {
             }
             // 同步颜色
             if(message.transferObjectName === 'color') {
-                if(message.color === 0) {
-                    context.strokeStyle = "red";
-                }else if (message.color === 1) {
-                    context.strokeStyle = "green";
-                }else if (message.color === 2) {
-                    context.strokeStyle = "skyblue";
+                switch (message.color) {
+                    case 0: context.strokeStyle = "#000000"; break;
+                    case 1: context.strokeStyle = "#d0010c"; break;
+                    case 2: context.strokeStyle = "#ec7012"; break;
+                    case 3: context.strokeStyle = "#f19913"; break;
+                    case 4: context.strokeStyle = "#f6c71a"; break;
+                    case 5: context.strokeStyle = "#fdf31c"; break;
+                    case 6: context.strokeStyle = "#cadf1b"; break;
+                    case 7: context.strokeStyle = "#97c71e"; break;
+                    case 8: context.strokeStyle = "#019218"; break;
+                    case 9: context.strokeStyle = "#0195a2"; break;
+                    case 10: context.strokeStyle = "#0097cb"; break;
+                    case 11: context.strokeStyle = "#0199f1"; break;
+                    case 12: context.strokeStyle = "#007dd3"; break;
+                    case 13: context.strokeStyle = "#0161b3"; break;
+                    case 14: context.strokeStyle = "#004594"; break;
+                    case 15: context.strokeStyle = "#000268"; break;
+                    case 16: context.strokeStyle = "#51015c"; break;
+                    case 17: context.strokeStyle = "#7a014a"; break;
                 }
             }
             // 同步清空画板
             if(message.transferObjectName === 'clearBoard') {
                 context.fillStyle="#FFFFFF";
                 context.beginPath();
-                context.fillRect(0,0, 600,500);
+                context.fillRect(0,0, 852,520);
                 context.closePath();
             }
             // 同步线条宽度
@@ -60,11 +74,26 @@ function openWebSocket() {
             if(message.transferObjectName === 'word') {
                 console.log(message.word);
             }
+            // 同步其它用户上线信息
+            if(message.transferObjectName === 'playerOnline') {
+                // 将其它用户信息添加到玩家列表中
+                addPlayerInfoToPlayerList(message);
+                // 将其他用户上线信息添加到聊天框中
+                addPlayerOnlineInfoToChatList(message);
+            }
+            // 同步其它用户下线信息
+            if(message.transferObjectName === 'playerOffline') {
+                // 将其它用户信息从玩家列表中删除
+                removePlayerInfoFromPlayerList(message);
+                // 将其它用户下线信息添加到聊天框中
+                addPlayerOfflineInfoToChatList(message);
+            }
 
             // console.log(message.toString());
         }
         // 关闭连接回调函数
         webSocket.onclose = function() {
+            // 主动关闭浏览器是否触发存疑
             console.log('用户：' + username + ' 关闭连接！');
         }
         // 发生错误回调函数
@@ -157,6 +186,60 @@ function sendLineWidthMessage(num) {
     var lw = new LineWidth(username, num);
     webSocket.send(JSON.stringify(lw));
 }
+
+/**
+ * 客户端在线消息构造函数
+ * @param username
+ * @constructor
+ */
+function PlayerOnline(username) {
+    this.transferObjectName = 'playerOnline';
+    this.username = username;
+}
+
+/**
+ * 发送同步用户上线信息
+ * @param username
+ */
+function sendPlayerOnlineMessage(username) {
+    var player = new PlayerOnline(username);
+    webSocket.send(JSON.stringify(player));
+}
+
+/**
+ * 客户端离线消息构造函数
+ * @param username 客户端用户名
+ * @constructor
+ */
+function PlayerOffline(username) {
+    this.transferObjectName = 'playerOffline';
+    this.username = username;
+}
+
+/**
+ * 发送同步用户下线信息
+ * @param username 客户端用户名
+ */
+function sendPlayerOfflineMessage(username) {
+    var player = new PlayerOffline(username);
+    webSocket.send(JSON.stringify(player));
+}
+
+/**
+ * 设置关闭浏览器监听属性
+ * @type {onbeforeunload_handler} 关闭浏览器时触发的函数
+ */
+window.onbeforeunload = onbeforeunload_handler;
+
+/**
+ * 关闭浏览器时触发的函数
+ */
+function onbeforeunload_handler() {
+    // 向服务器发送下线信息
+    sendPlayerOfflineMessage(username);
+}
+
+
 
 
 

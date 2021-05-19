@@ -12,6 +12,8 @@ window.onload = function() {
     canvas = document.getElementById('myCanvas');
     // 获取上下文
     context = canvas.getContext('2d');
+    // 设置画笔默认宽度
+    context.lineWidth = lineWidth;
     // 获取画板
     board = document.getElementById('board');
     // 绑定鼠标事件
@@ -77,7 +79,7 @@ function drawLine(x, y, x1, y1) {
  * 清除画布
  */
 function clearCanvas() {
-    context.clearRect(0, 0, 600, 500);
+    context.clearRect(0, 0, 852, 520);
     // 向服务器发送清空画板信息
     sendClearBoardMessage();
 }
@@ -88,12 +90,25 @@ function clearCanvas() {
 function colorChoose(num) {
     color = num;
     // 更新画笔颜色
-    if(color === 0) {
-        context.strokeStyle = "red";
-    }else if (color === 1) {
-        context.strokeStyle = "green";
-    }else if (color === 2) {
-        context.strokeStyle = "skyblue";
+    switch (color) {
+        case 0: context.strokeStyle = "#000000"; break;
+        case 1: context.strokeStyle = "#d0010c"; break;
+        case 2: context.strokeStyle = "#ec7012"; break;
+        case 3: context.strokeStyle = "#f19913"; break;
+        case 4: context.strokeStyle = "#f6c71a"; break;
+        case 5: context.strokeStyle = "#fdf31c"; break;
+        case 6: context.strokeStyle = "#cadf1b"; break;
+        case 7: context.strokeStyle = "#97c71e"; break;
+        case 8: context.strokeStyle = "#019218"; break;
+        case 9: context.strokeStyle = "#0195a2"; break;
+        case 10: context.strokeStyle = "#0097cb"; break;
+        case 11: context.strokeStyle = "#0199f1"; break;
+        case 12: context.strokeStyle = "#007dd3"; break;
+        case 13: context.strokeStyle = "#0161b3"; break;
+        case 14: context.strokeStyle = "#004594"; break;
+        case 15: context.strokeStyle = "#000268"; break;
+        case 16: context.strokeStyle = "#51015c"; break;
+        case 17: context.strokeStyle = "#7a014a"; break;
     }
     // 向服务器发送颜色信息
     sendColorMessage(num);

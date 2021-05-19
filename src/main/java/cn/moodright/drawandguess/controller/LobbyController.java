@@ -24,8 +24,4 @@ public class LobbyController {
         return "lobby";
     }
 
-    @GetMapping("/newlobby")
-    public String newLobby() {
-        return "newlobby";
-    }
 }

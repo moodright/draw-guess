@@ -2,45 +2,96 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lobby</title>
+    <title>游戏大厅</title>
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" type="text/css" href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" />
+    <!-- google font -->
+    <link href="https://fonts.font.im/css?family=Kirang+Haerang|Muli" rel="stylesheet">
+    <!-- lobby.css -->
+    <link rel="stylesheet" type="text/css" href="/css/lobby.css" />
     <!-- jquery-3.5.1.js -->
     <script src="/lib/jquery/jquery-3.5.1.js"></script>
     <!-- lobby-canvas.js -->
     <script src="/js/lobby/lobby-canvas.js"></script>
     <!-- lobby-websocket.js -->
     <script src="/js/lobby/lobby-websocket.js"></script>
-    <!-- lobby.css -->
-    <link rel="stylesheet" type="text/css" href="/css/lobby.css" />
+    <!-- lobby-tagcontrol.js -->
+    <script src="/js/lobby/lobby-tagcontrol.js"></script>
 </head>
 <body>
-    <div class=left-main>
-        <!-- 选择颜色 -->
-        <div class="color-choose">
-            <div class="red-block" onclick="colorChoose(0)"></div>
-            <div class="green-block" onclick="colorChoose(1)"></div>
-            <div class="skyblue-block" onclick="colorChoose(2)"></div>
+    <div class="main">
+        <div class="left-main">
+            <div id="playerList" class="top-playerList"></div>
+            <div class="bottom-functionButtonList">准备</div>
         </div>
-        <!-- 选择画笔粗细 -->
-        <div class="penwidth-choose">
-            <div class="slim">
-                <div class="slim-width" onclick="lineWidthChoose(2)"></div>
+        <div class="middle-main">
+            <div id="board" class="board">
+                <canvas id="myCanvas" width="852" height="520"></canvas>
+                <input id="socket-username" style="display: none" th:value="${username}" />
             </div>
-            <div class="medium">
-                <div class="medium-width" onclick="lineWidthChoose(4)"></div>
-            </div>
-            <div class="large">
-                <div class="large-width" onclick="lineWidthChoose(8)"></div>
+            <div class="board-tools">
+                <div class="clear-board">
+                    <div class="button" onclick="clearCanvas()">清空画板</div>
+                </div>
+                <div class="line-choose">
+                    <div class="title">选取线条粗细</div>
+                    <div class="width-option">
+                        <div class="option">
+                            <div class="normal" onclick="lineWidthChoose(2)"></div>
+                        </div>
+                        <div class="option">
+                            <div class="medium" onclick="lineWidthChoose(4)"></div>
+                        </div>
+                        <div class="option">
+                            <div class="large" onclick="lineWidthChoose(8)"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="color-choose">
+                    <div class="title">选取画笔颜色</div>
+                    <div class="color-option">
+                        <div class="option" style="background: #000000" onclick="colorChoose(0)"></div>
+                        <div class="option" style="background: #d0010c" onclick="colorChoose(1)"></div>
+                        <div class="option" style="background: #ec7012" onclick="colorChoose(2)"></div>
+                        <div class="option" style="background: #f19913" onclick="colorChoose(3)"></div>
+                        <div class="option" style="background: #f6c71a" onclick="colorChoose(4)"></div>
+                        <div class="option" style="background: #fdf31c" onclick="colorChoose(5)"></div>
+                        <div class="option" style="background: #cadf1b" onclick="colorChoose(6)"></div>
+                        <div class="option" style="background: #97c71e" onclick="colorChoose(7)"></div>
+                        <div class="option" style="background: #019218" onclick="colorChoose(8)"></div>
+                        <div class="option" style="background: #0195a2" onclick="colorChoose(9)"></div>
+                        <div class="option" style="background: #0097cb" onclick="colorChoose(10)"></div>
+                        <div class="option" style="background: #0199f1" onclick="colorChoose(11)"></div>
+                        <div class="option" style="background: #007dd3" onclick="colorChoose(12)"></div>
+                        <div class="option" style="background: #0161b3" onclick="colorChoose(13)"></div>
+                        <div class="option" style="background: #004594" onclick="colorChoose(14)"></div>
+                        <div class="option" style="background: #000268" onclick="colorChoose(15)"></div>
+                        <div class="option" style="background: #51015c" onclick="colorChoose(16)"></div>
+                        <div class="option" style="background: #7a014a" onclick="colorChoose(17)"></div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- 清除画板 -->
-        <div class="function-section">
-            <input type="button" value="清除画板" onclick="clearCanvas()"><br>
-            <input id="socket-username" type="text" placeholder="请输入连接的用户名" th:value="${username}">
+        <div class="right-main">
+            <div class="notification">
+                <div class="clock">
+                    <i class="fa fa-clock-o"></i><span id="countdown">60</span>
+                </div>
+                <div class="prompt">
+                    <div class="word-type">词汇提示类型</div>
+                    <div class="word-length">两个字</div>
+                </div>
+            </div>
+            <div id="chat-list" class="chat"></div>
+            <div class="send-message">
+                <div class="input-bar">
+                    <textarea></textarea>
+                </div>
+                <div class="send-button">
+                    发送
+                </div>
+            </div>
         </div>
-    </div>
-    <!-- 画板 -->
-    <div id="board">
-        <canvas id="myCanvas" width="600" height="500"></canvas>
     </div>
 </body>
 </html>
