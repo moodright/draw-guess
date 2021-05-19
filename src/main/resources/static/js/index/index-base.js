@@ -1,4 +1,6 @@
-
+/**
+ * 跳转到大厅
+ */
 function toLobby() {
     var username = $('#username').val();
     if(username === '') {

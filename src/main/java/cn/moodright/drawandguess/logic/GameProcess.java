@@ -21,8 +21,56 @@ public class GameProcess {
     private static final Timer timer = new Timer();
     // 玩家用户名Map，用于确定绘画者
     private static Map<String, Boolean> playerMap = null;
-    // 玩家用户名列表，存储顺序为玩家建立连接时的先后顺序
+    // 玩家用户名列表，存储顺序为玩家建立连接时的先后顺序，用于确定绘画者
     private static List<String> playerList = null;
+    // 玩家准备数量，用于判断游戏是否开始
+    private static int playerReadyCount = 0;
+    // 游戏总回合数
+    private static int roundCount = 0;
+
+    /**
+     * 获取游戏总回合数
+     * @return 游戏总回合数
+     */
+    public static synchronized int getRoundCount() {
+        return roundCount;
+    }
+
+    /**
+     * 游戏总回合数自减
+     */
+    public static synchronized void subRoundCount() {
+        roundCount--;
+    }
+
+    /**
+     * 获取玩家准备数量
+     * @return 玩家准备数量
+     */
+    public static synchronized int getPlayerReadyCount() {
+        return playerReadyCount;
+    }
+
+    /**
+     * 玩家准备数量自增
+     */
+    public static synchronized void addPlayerReadyCount() {
+        playerReadyCount++;
+    }
+
+    /**
+     * 玩家准备数量自减
+     */
+    public static synchronized void subPlayerReadyCount() {
+        playerReadyCount--;
+    }
+
+    /**
+     * 重置玩家准备数量
+     */
+    public static synchronized void resetPlayerReadyCount() {
+        playerReadyCount = 0;
+    }
 
     /**
      * 回合开始
@@ -102,6 +150,8 @@ public class GameProcess {
             // 初始化所有玩家为非绘画者
             playerMap.put(username, false);
         }
+        // 初始化游戏总回合数
+        roundCount = getPlayerReadyCount() * 2;
     }
 
 

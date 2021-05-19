@@ -90,6 +90,7 @@ html, body {
     color: #ffb900;
 }
 .rank-info .painter-icon {
+    display: none;
     width: 60px;
     height: 60px;
     text-align: center;
@@ -113,10 +114,6 @@ html, body {
     cursor: pointer;
     color: #222;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-.bottom-functionButtonList:hover {
-    background: #409EFF;
-    color: white;
 }
 
 .main .middle-main {

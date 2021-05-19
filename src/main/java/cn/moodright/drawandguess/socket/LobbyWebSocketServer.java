@@ -2,7 +2,11 @@ package cn.moodright.drawandguess.socket;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
+import cn.moodright.drawandguess.entity.canvas.BaseMessage;
+import cn.moodright.drawandguess.entity.canvas.GameStartMessage;
 import cn.moodright.drawandguess.entity.canvas.OnlineMessage;
+import cn.moodright.drawandguess.entity.canvas.ReadyMessage;
+import cn.moodright.drawandguess.logic.GameProcess;
 import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Component;
 import javax.websocket.*;
@@ -65,10 +69,6 @@ public class LobbyWebSocketServer {
 
         log.info("用户：" + username + " 连接, 当前在线人数为：" + getOnlineCount());
 
-//        if(getOnlineCount() == Settings.PLAYER_COUNT) {
-//            // 游戏开始
-//            GameProcess.gameStart();
-//        }
     }
 
     /**
@@ -92,6 +92,32 @@ public class LobbyWebSocketServer {
     @OnMessage
     public void onMessage(Session session, String message) throws IOException {
         log.info("用户：" + username + " 向服务器发送了信息：" + message);
+        // 将message字段转换为基础消息对象
+        BaseMessage baseMessage = JSON.parseObject(message, BaseMessage.class);
+        // 接收的消息为准备消息
+        if(baseMessage.getTransferObjectName().equals("ready")) {
+            ReadyMessage readyMessage = JSON.parseObject(message, ReadyMessage.class);
+            if (readyMessage.getReady().equals(true)) {
+                log.info("用户：" + username + " 已准备！");
+                // 玩家准备数量加一
+                GameProcess.addPlayerReadyCount();
+                // 游戏开始判断：准备人数大于0 且 准备人数与游戏在线人数相等 -> 游戏开始
+                if(GameProcess.getPlayerReadyCount() == getOnlineCount() && GameProcess.getPlayerReadyCount() > 0) {
+                    // 广播游戏开始消息
+                    broadcastMessage(JSON.toJSONString(new GameStartMessage("gameStart", "serverSide")));
+                    // 游戏开始
+                    GameProcess.gameStart();
+                    return;
+                }
+            }else {
+                log.info("用户：" + username + " 取消准备！");
+                // 玩家准备数量减一
+                GameProcess.subPlayerReadyCount();
+            }
+        }
+
+
+        // 消息转发
         broadcastMessageExceptMyself(message);
     }
 
@@ -105,7 +131,9 @@ public class LobbyWebSocketServer {
      * @param message 消息
      */
     public void sendMessage(String message) throws IOException {
-        this.session.getBasicRemote().sendText(message);
+        synchronized (this.session) {
+            this.session.getBasicRemote().sendText(message);
+        }
     }
 
     /**
@@ -158,9 +186,6 @@ public class LobbyWebSocketServer {
      */
     public static List<String> getUsernameList() {
         List<String> usernameSequenceList = new ArrayList<>();
-//        for (Map.Entry<String, LobbyWebSocketServer> entry : lobbyWebSocketMap.entrySet()) {
-//            usernameSequenceList.add(entry.getKey());
-//        }
         // 根据order字段对map进行排序
         List<LobbyWebSocketServer> collect = lobbyWebSocketMap.values().stream().sorted(Comparator.comparing(LobbyWebSocketServer::getOrder)).collect(Collectors.toList());
         for( LobbyWebSocketServer lobbyWebSocketServer : collect) {
@@ -168,14 +193,6 @@ public class LobbyWebSocketServer {
         }
         return usernameSequenceList;
     }
-
-
-
-
-
-
-
-    // ---------------------------------------------------  static method start
 
     public static synchronized void addOnlineCount() {
         onlineCount++;

@@ -2,8 +2,10 @@ package cn.moodright.drawandguess.logic;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
+import cn.moodright.drawandguess.entity.canvas.GameStopMessage;
 import cn.moodright.drawandguess.entity.game.Settings;
 import cn.moodright.drawandguess.socket.LobbyWebSocketServer;
+import com.alibaba.fastjson.JSON;
 
 import java.io.IOException;
 import java.util.TimerTask;
@@ -16,8 +18,6 @@ public class Round extends TimerTask {
     private static final Log log = LogFactory.get();
     // 回合剩余时间倒计时
     private int roundCountDown = Settings.ROUND_COUNT_DOWN;
-    // 总回合数
-    private static int roundCount = Settings.ROUND_COUNT;
     // 当前回合单词
     private static String currentWord = null;
 
@@ -30,15 +30,17 @@ public class Round extends TimerTask {
                 log.info("当前回合计时结束");
                 cancel();
                 // 游戏总回合数减一
-                roundCount--;
-                if (roundCount > 0) {
-                    log.info("新的回合开始, 还剩余" + roundCount + "回合！");
+                GameProcess.subRoundCount();
+                if (GameProcess.getRoundCount() > 0) {
+                    log.info("新的回合开始, 还剩余" + GameProcess.getRoundCount() + "回合！");
                     GameProcess.roundStart();
                 }
-                if (roundCount == 0) {
+                if (GameProcess.getRoundCount() == 0) {
                     log.info("游戏结束，重置游戏资源");
                     // 重置游戏资源
                     resetGameResource();
+                    // 发送游戏停止消息
+                    LobbyWebSocketServer.broadcastMessage(JSON.toJSONString(new GameStopMessage("gameStop", "serverSide")));
                 }
             }
         } catch (IOException e) {
@@ -50,10 +52,10 @@ public class Round extends TimerTask {
      * 重置游戏资源
      */
     public static void resetGameResource() {
-        // 重置总回合数
-        roundCount = Settings.ROUND_COUNT;
         // 重置游戏单词
         currentWord = null;
+        // 重置玩家准备数量
+        GameProcess.resetPlayerReadyCount();
     }
 
     /**

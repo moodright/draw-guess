@@ -88,6 +88,24 @@ function openWebSocket() {
                 // 将其它用户下线信息添加到聊天框中
                 addPlayerOfflineInfoToChatList(message);
             }
+            // 同步其它用户准备消息
+            if(message.transferObjectName === 'ready') {
+                var readyIcon = $('#' + message.username + '-ready');
+                if(message.ready === true) {
+                    // 改变改名玩家的准备图标样式
+                    readyIcon.css('display', 'block');
+                }else {
+                    readyIcon.css('display', 'none');
+                }
+            }
+            // 同步游戏开始消息
+            if(message.transferObjectName === 'gameStart') {
+                disableReadyFunctionBeforeGameStart();
+            }
+            // 同步游戏停止消息
+            if(message.transferObjectName === 'gameStop') {
+                enableReadyFunctionAfterGameStop();
+            }
 
             // console.log(message.toString());
         }
@@ -237,6 +255,28 @@ window.onbeforeunload = onbeforeunload_handler;
 function onbeforeunload_handler() {
     // 向服务器发送下线信息
     sendPlayerOfflineMessage(username);
+}
+
+/**
+ * 准备消息构造函数
+ * @param username 客户端用户名
+ * @param isReady 准备
+ * @constructor
+ */
+function Ready(username, isReady) {
+    this.transferObjectName = 'ready';
+    this.username = username;
+    this.ready = isReady;
+}
+
+/**
+ * 向服务器发送准备消息
+ * @param username
+ * @param isReady 准备
+ */
+function sendReadyMessage(username, isReady) {
+    var ready = new Ready(username, isReady);
+    webSocket.send(JSON.stringify(ready));
 }
 
 

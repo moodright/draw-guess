@@ -21,7 +21,7 @@ function addPlayerInfoToPlayerList(playerInfo) {
             '                            <div class="credit">\n' +
             '                                <i class="fa fa-trophy"></i><span'+ 'id=\"' + playerInfo.username  + '-credit\">0</span>\n' +
             '                            </div>\n' +
-            '                            <div class="painter-icon">\n' +
+            '                            <div id="'+ playerInfo.username + '-ready" class="painter-icon">\n' +
             '                                <i class="fa fa-paint-brush"></i>\n' +
             '                            </div>\n' +
             '                        </div>\n' +
@@ -69,4 +69,63 @@ function addPlayerOfflineInfoToChatList(playerInfo) {
         '</span><span> 离开了游戏</span>' +
         '                </div>');
     chatList.append(onlineTag);
+}
+
+/**
+ * 准备
+ */
+function iamready() {
+    // 获取准备图标元素
+    var readyIcon = $('#' + username + '-ready');
+    // 获取准备按钮元素
+    var readyButton = $('#ready-button');
+    if(readyIcon.css('display') === 'none') {
+        // 准备
+        readyIcon.css('display', 'block');
+        readyButton.css('background', '#409EFF');
+        readyButton.css('color', '#ffffff');
+        readyButton.text("取消准备");
+        // 向服务器发送准备消息
+        sendReadyMessage(username, true);
+    }else {
+        // 取消准备
+        readyIcon.css('display', 'none');
+        readyButton.css('background', '#ffffff');
+        readyButton.css('color', '#000000');
+        readyButton.text("准备");
+        // 向服务器发送取消准备消息
+        sendReadyMessage(username, false);
+    }
+}
+
+/**
+ * 在游戏开始前禁用准备功能
+ */
+function disableReadyFunctionBeforeGameStart() {
+    // 获取准备图标元素
+    var readyIcon = $('.painter-icon');
+    // 获取准备按钮元素
+    var readyButton = $('#ready-button');
+    // 重置准备图标
+    readyIcon.css('display', 'none');
+    // 重置准备按钮内容
+    readyButton.css('background', '#ffffff');
+    readyButton.css('color', '#000000');
+    readyButton.text("准备");
+    // 禁用准备按钮
+    readyButton.css('display', 'none');
+}
+
+/**
+ * 在游戏结束后恢复准备功能
+ */
+function enableReadyFunctionAfterGameStop() {
+    // 获取准备图标元素
+    var readyIcon = $('.painter-icon');
+    // 获取准备按钮元素
+    var readyButton = $('#ready-button');
+    // 重置准备图标
+    readyIcon.css('display', 'none');
+    // 开启准备按钮
+    readyButton.css('display', 'block');
 }

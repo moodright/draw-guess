@@ -13,12 +13,4 @@ public class Settings {
      * 词典
      */
     public static final String[] WORD = {"猫", "狗", "鸡"};
-    /**
-     * 游戏人数
-     */
-    public static final int PLAYER_COUNT = 3;
-    /**
-     * 游戏回合数
-     */
-    public static final int ROUND_COUNT = PLAYER_COUNT * 2;
 }
