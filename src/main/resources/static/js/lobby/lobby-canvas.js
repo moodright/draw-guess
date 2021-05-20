@@ -6,6 +6,7 @@ var lineWidth = 2; // 画笔粗细
 var canvas; // canvas
 var context; // canvas-context
 var isMouseDown = false; // 鼠标按下判断属性
+var isPainter = false; // 绘画者判断属性
 
 window.onload = function() {
     // 获取画布
@@ -36,12 +37,13 @@ function mouseDownAction(e) {
  * 鼠标移动
  */
 function mouseMoveAction(e) {
-    if(isMouseDown) {
+    if(isMouseDown && isPainter) {
         X1 = e.offsetX;
         Y1 = e.offsetY;
         flag++;
         // 向服务器发送绘画消息
         sendCoordinateMessage(X, Y, X1, Y1);
+        // 绘制Canvas
         drawLine(X, Y, X1, Y1);
     }
 }

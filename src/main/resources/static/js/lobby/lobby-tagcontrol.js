@@ -168,3 +168,47 @@ function updateWordPickCountDownTag(time) {
     var countDown = $('#time-left');
     countDown.text(time);
 }
+
+/**
+ * 显示绘画图标
+ */
+function showPainterIcon(message) {
+    // 获取准备图标元素
+    var readyIcon = $('#' + message.username + '-ready');
+    readyIcon.css('display', 'block');
+}
+
+function hidePainterIcon(message) {
+    // 获取准备图标元素
+    var readyIcon = $('#' + message.username + '-ready');
+    readyIcon.css('display', 'none');
+}
+
+function hideEveryonesPainterIcon() {
+    var readyIcon = $('.painter-icon');
+    readyIcon.css('display', 'none');
+}
+
+/**
+ * 开启绘画功能
+ */
+function enablePaintingFunction() {
+    // 获取工具栏元素
+    var tools = $('#board-tools');
+    // 显示工具栏
+    tools.css('visibility', 'visible');
+    // 修改绘画判断字段
+    isPainter = true;
+}
+
+/**
+ * 关闭绘画功能
+ */
+function disablePaintingFunction() {
+    // 获取工具栏元素
+    var tools = $('#board-tools');
+    // 隐藏工具栏
+    tools.css('visibility', 'hidden');
+    // 修改绘画判断字段
+    isPainter = false;
+}

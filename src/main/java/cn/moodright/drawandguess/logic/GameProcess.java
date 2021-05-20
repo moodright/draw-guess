@@ -125,17 +125,8 @@ public class GameProcess {
                 playerMap.put(playerList.get(i), true);
                 log.info("当前回合绘画者为：" + playerList.get(i));
                 // 发送确定绘画者消息
-                LobbyWebSocketServer.sendMessageToSpecifiedUser(
-                        JSON.toJSONString(new PainterMessage("whoIsPainter", playerList.get(i), true)),
-                        playerList.get(i));
-                // 发送确定猜词者消息
-                for (String username : playerList) {
-                    if(!username.equals(playerList.get(i))) {
-                        LobbyWebSocketServer.sendMessageToSpecifiedUser(
-                                JSON.toJSONString(new PainterMessage("whoIsPainter", username, false)),
-                                username);
-                    }
-                }
+                LobbyWebSocketServer.broadcastMessage(
+                        JSON.toJSONString(new PainterMessage("whoIsPainter", playerList.get(i))));
                 if (i == playerList.size() - 1) {
                     log.info("此轮游戏结束，重置绘画者选取规则");
                     // 重置绘画者Map值

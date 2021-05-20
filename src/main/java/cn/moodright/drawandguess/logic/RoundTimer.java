@@ -4,6 +4,7 @@ import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import cn.moodright.drawandguess.entity.message.GameStopMessage;
 import cn.moodright.drawandguess.entity.game.Settings;
+import cn.moodright.drawandguess.entity.message.ResetGameMessage;
 import cn.moodright.drawandguess.socket.LobbyWebSocketServer;
 import com.alibaba.fastjson.JSON;
 
@@ -40,6 +41,8 @@ public class RoundTimer extends TimerTask {
                     log.info("游戏结束，重置游戏资源");
                     // 重置游戏资源
                     resetGameResource();
+                    // 发送重置游戏消息
+                    LobbyWebSocketServer.broadcastMessage(JSON.toJSONString(new ResetGameMessage("resetGame", "serverSide")));
                     // 发送游戏停止消息
                     LobbyWebSocketServer.broadcastMessage(JSON.toJSONString(new GameStopMessage("gameStop", "serverSide")));
                 }

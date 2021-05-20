@@ -68,7 +68,21 @@ function openWebSocket() {
             }
             // 同步绘画者
             if(message.transferObjectName === 'whoIsPainter') {
-                console.log(message.painter);
+                // 清空画板
+                context.clearRect(0, 0, 852, 520);
+                // 重置所有人的绘画图标
+                hideEveryonesPainterIcon();
+                // 显示绘画者图标
+                showPainterIcon(message);
+                if(message.username === username) {
+                    // 绘画者
+                    // 开启绘画功能
+                    enablePaintingFunction();
+                }else {
+                    // 猜词者
+                    // 关闭会话功能
+                    disablePaintingFunction();
+                }
             }
             // 同步接收的单词
             if(message.transferObjectName === 'word') {
@@ -120,6 +134,15 @@ function openWebSocket() {
             if(message.transferObjectName === 'wordPickCountDown') {
                 // 同步到倒计时标签
                 updateWordPickCountDownTag(message.countDown);
+            }
+            // 同步重置游戏消息
+            if(message.transferObjectName === 'resetGame') {
+                // 获取工具栏元素
+                var tools = $('#board-tools');
+                // 显示工具栏
+                tools.css('visibility', 'visible');
+                // 关闭绘画功能
+                isPainter = false;
             }
 
             // console.log(message.toString());

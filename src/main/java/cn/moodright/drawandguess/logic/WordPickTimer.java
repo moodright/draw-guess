@@ -18,6 +18,8 @@ import java.util.TimerTask;
  */
 public class WordPickTimer extends TimerTask {
     private static final Log log = LogFactory.get();
+    // 定时器
+    private static final Timer timer = new Timer();
     // 每回合单词确认剩余时间倒计时
     private int wordPickCountDown = Settings.WORD_PICK_COUNT_DOWN;
     // 确认开始绘画字段
@@ -57,7 +59,7 @@ public class WordPickTimer extends TimerTask {
             }
             cancel();
             // 开始本回合计时
-            new Timer().schedule(new RoundTimer(), 0, 1000);
+            timer.schedule(new RoundTimer(), 0, 1000);
         }
     }
 
