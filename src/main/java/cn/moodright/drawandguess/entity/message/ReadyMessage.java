@@ -1,4 +1,4 @@
-package cn.moodright.drawandguess.entity.canvas;
+package cn.moodright.drawandguess.entity.message;
 
 /**
  * 准备消息

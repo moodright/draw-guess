@@ -2,11 +2,9 @@ package cn.moodright.drawandguess.socket;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import cn.moodright.drawandguess.entity.canvas.BaseMessage;
-import cn.moodright.drawandguess.entity.canvas.GameStartMessage;
-import cn.moodright.drawandguess.entity.canvas.OnlineMessage;
-import cn.moodright.drawandguess.entity.canvas.ReadyMessage;
+import cn.moodright.drawandguess.entity.message.*;
 import cn.moodright.drawandguess.logic.GameProcess;
+import cn.moodright.drawandguess.logic.WordPickTimer;
 import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Component;
 import javax.websocket.*;
@@ -94,7 +92,7 @@ public class LobbyWebSocketServer {
         log.info("用户：" + username + " 向服务器发送了信息：" + message);
         // 将message字段转换为基础消息对象
         BaseMessage baseMessage = JSON.parseObject(message, BaseMessage.class);
-        // 接收的消息为准备消息
+        // 接收玩家准备消息
         if(baseMessage.getTransferObjectName().equals("ready")) {
             ReadyMessage readyMessage = JSON.parseObject(message, ReadyMessage.class);
             if (readyMessage.getReady().equals(true)) {
@@ -113,6 +111,14 @@ public class LobbyWebSocketServer {
                 log.info("用户：" + username + " 取消准备！");
                 // 玩家准备数量减一
                 GameProcess.subPlayerReadyCount();
+            }
+        }
+        // 接收绘画者确认单词消息
+        if(baseMessage.getTransferObjectName().equals("confirmWord")) {
+            WordConfirmMessage wordConfirmMessage = JSON.parseObject(message, WordConfirmMessage.class);
+            if(GameProcess.getWordPickTimer() != null) {
+                GameProcess.getWordPickTimer().painterConfirm();
+                log.info("用户：" + wordConfirmMessage.getUsername() + " 确认该单词");
             }
         }
 

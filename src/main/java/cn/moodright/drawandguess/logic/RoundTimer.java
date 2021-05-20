@@ -2,7 +2,7 @@ package cn.moodright.drawandguess.logic;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import cn.moodright.drawandguess.entity.canvas.GameStopMessage;
+import cn.moodright.drawandguess.entity.message.GameStopMessage;
 import cn.moodright.drawandguess.entity.game.Settings;
 import cn.moodright.drawandguess.socket.LobbyWebSocketServer;
 import com.alibaba.fastjson.JSON;
@@ -14,7 +14,7 @@ import java.util.TimerTask;
  * 回合定时器
  * Created by moodright in 2021/5/17
  */
-public class Round extends TimerTask {
+public class RoundTimer extends TimerTask {
     private static final Log log = LogFactory.get();
     // 回合剩余时间倒计时
     private int roundCountDown = Settings.ROUND_COUNT_DOWN;
@@ -26,6 +26,7 @@ public class Round extends TimerTask {
         try {
             // 广播倒计时消息
             LobbyWebSocketServer.broadcastMessage(String.valueOf(roundCountDown--));
+            log.info("绘画剩余时间：" + roundCountDown);
             if(roundCountDown == 0) {
                 log.info("当前回合计时结束");
                 cancel();

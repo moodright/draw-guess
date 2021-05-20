@@ -2,8 +2,8 @@ package cn.moodright.drawandguess.logic;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import cn.moodright.drawandguess.entity.canvas.PainterMessage;
-import cn.moodright.drawandguess.entity.canvas.WordMessage;
+import cn.moodright.drawandguess.entity.message.PainterMessage;
+import cn.moodright.drawandguess.entity.message.WordMessage;
 import cn.moodright.drawandguess.entity.game.Settings;
 import cn.moodright.drawandguess.socket.LobbyWebSocketServer;
 import com.alibaba.fastjson.JSON;
@@ -27,6 +27,16 @@ public class GameProcess {
     private static int playerReadyCount = 0;
     // 游戏总回合数
     private static int roundCount = 0;
+    // 选择单词计时器
+    private static WordPickTimer wordPickTimer = null;
+
+    /**
+     * 获取单词计时器
+     * @return 单词计时器
+     */
+    public static WordPickTimer getWordPickTimer() {
+        return wordPickTimer;
+    }
 
     /**
      * 获取游戏总回合数
@@ -77,13 +87,15 @@ public class GameProcess {
      */
     public static void roundStart() throws IOException {
         // 确定该回合绘画者
-        String username = GameProcess.whoIsPainter();
+        String painterUsername = GameProcess.whoIsPainter();
         // 向绘画者发送该回合单词
-        String word = sendWordToPainter(username);
+        String word = sendWordToPainter(painterUsername);
         // 更新该回合单词
-        Round.updateCurrentWord(word);
-        // 当前回合定时器
-        timer.schedule(new Round(), 0, 1000);
+        RoundTimer.updateCurrentWord(word);
+        // 存储该引用用于接收到玩家确认单词消息时修改confirm变量
+        wordPickTimer = new WordPickTimer(painterUsername);
+        // 确认单词计时器开始计时
+        timer.schedule(wordPickTimer, 0, 1000);
     }
 
     /**

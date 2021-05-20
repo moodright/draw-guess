@@ -1,4 +1,4 @@
-package cn.moodright.drawandguess.entity.canvas;
+package cn.moodright.drawandguess.entity.message;
 
 /**
  * 判断绘画者消息

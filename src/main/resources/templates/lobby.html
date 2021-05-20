@@ -93,5 +93,22 @@
             </div>
         </div>
     </div>
+    <!-- 提示框 -->
+    <div id="word-alert" class="alert">
+        <div class="title">
+            轮到你作图了
+        </div>
+        <div class="content">
+            <div id="word"></div>
+            <div class="count-down">
+                将在 <span id="time-left" style="color:#fb7299"></span> 秒后自动确认
+            </div>
+        </div>
+        <div class="footer">
+            <div class="confirm-button" onclick="confirmPaint()">开始作图</div>
+        </div>
+    </div>
+    <!-- 自定义遮罩层 -->
+    <div class="mask"></div>
 </body>
 </html>

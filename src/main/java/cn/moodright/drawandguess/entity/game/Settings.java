@@ -10,6 +10,10 @@ public class Settings {
      */
     public static final int ROUND_COUNT_DOWN = 5;
     /**
+     * 每回合单词选择的倒计时
+     */
+    public static final int WORD_PICK_COUNT_DOWN = 20;
+    /**
      * 词典
      */
     public static final String[] WORD = {"猫", "狗", "鸡"};

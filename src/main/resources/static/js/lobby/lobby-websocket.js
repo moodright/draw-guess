@@ -72,7 +72,8 @@ function openWebSocket() {
             }
             // 同步接收的单词
             if(message.transferObjectName === 'word') {
-                console.log(message.word);
+                // 显示单词提示框
+                showWordAlert(message.word);
             }
             // 同步其它用户上线信息
             if(message.transferObjectName === 'playerOnline') {
@@ -105,6 +106,20 @@ function openWebSocket() {
             // 同步游戏停止消息
             if(message.transferObjectName === 'gameStop') {
                 enableReadyFunctionAfterGameStop();
+            }
+            // 同步确认单词消息
+            if(message.transferObjectName === 'confirmWord') {
+                // 获取单词提示标签元素
+                var wordAlertTag = $('#word-alert');
+                // 获取遮罩层标签元素
+                var maskTag = $('.mask');
+                wordAlertTag.css('display', 'none');
+                maskTag.css('display', 'none');
+            }
+            // 同步单词确认倒计时
+            if(message.transferObjectName === 'wordPickCountDown') {
+                // 同步到倒计时标签
+                updateWordPickCountDownTag(message.countDown);
             }
 
             // console.log(message.toString());
@@ -278,6 +293,29 @@ function sendReadyMessage(username, isReady) {
     var ready = new Ready(username, isReady);
     webSocket.send(JSON.stringify(ready));
 }
+
+/**
+ * 确认单词消息
+ * @param username 用户名
+ * @param isConfirm 确认单词变量
+ * @constructor
+ */
+function WordConfirm(username) {
+    this.transferObjectName = 'confirmWord';
+    this.username = username;
+    this.confirm = true;
+}
+
+/**
+ * 发送确认该单词消息
+ * @param username
+ */
+function sendWordConfirmMessage(username) {
+    var confirm = new WordConfirm(username);
+    webSocket.send(JSON.stringify(confirm));
+}
+
+
 
 
 

@@ -129,3 +129,42 @@ function enableReadyFunctionAfterGameStop() {
     // 开启准备按钮
     readyButton.css('display', 'block');
 }
+
+/**
+ * 开始画图
+ */
+function confirmPaint() {
+    // 获取单词提示标签元素
+    var wordAlertTag = $('#word-alert');
+    // 获取遮罩层标签元素
+    var maskTag = $('.mask');
+    wordAlertTag.css('display', 'none');
+    maskTag.css('display', 'none');
+    // 发送确认消息
+    sendWordConfirmMessage(username);
+}
+
+/**
+ * 显示单词提示框
+ * @param word 提示的单词
+ */
+function showWordAlert(word) {
+    // 获取单词内容元素
+    var wordContentTag = $('#word');
+    // 获取单词提示标签元素
+    var wordAlertTag = $('#word-alert');
+    // 获取遮罩层标签元素
+    var maskTag = $('.mask');
+    wordContentTag.text(word);
+    wordAlertTag.css('display', 'block');
+    maskTag.css('display', 'block');
+}
+
+/**
+ * 更新确认单词倒计时时间
+ */
+function updateWordPickCountDownTag(time) {
+    console.log("========");
+    var countDown = $('#time-left');
+    countDown.text(time);
+}
