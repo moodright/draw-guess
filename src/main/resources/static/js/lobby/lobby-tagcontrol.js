@@ -212,3 +212,46 @@ function disablePaintingFunction() {
     // 修改绘画判断字段
     isPainter = false;
 }
+
+/*
+ * 设置输入域(input/textarea)光标的位置
+ * @param {HTMLInputElement/HTMLTextAreaElement} elem
+ * @param {Number} index
+ */
+function setCursorPosition(elem, index) {
+    var val = elem.value
+    var len = val.length
+
+    // 超过文本长度直接返回
+    if (len < index) return
+    setTimeout(function() {
+        elem.focus()
+        if (elem.setSelectionRange) { // 标准浏览器
+            elem.setSelectionRange(index, index)
+        } else { // IE9-
+            var range = elem.createTextRange()
+            range.moveStart("character", -len)
+            range.moveEnd("character", -len)
+            range.moveStart("character", index)
+            range.moveEnd("character", 0)
+            range.select()
+        }
+    }, 10)
+}
+
+/**
+ * 将聊天内容添加到聊天列表中
+ * @param message
+ */
+function addChatContentToChatList(message) {
+    var chatList = $('#chat-list');
+    var onlineTag = $('<div class="single-chat">\n' +
+        '                    <span class="username">' +
+        message.username +
+        '</span><span> ：' + message.content    + '</span>' +
+        '                </div>');
+    chatList.append(onlineTag);
+    // 聊天框滚轮自动滚动到最底部
+    chatList.scrollTop(chatList[0].scrollHeight);
+}
+

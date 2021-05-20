@@ -144,6 +144,10 @@ function openWebSocket() {
                 // 关闭绘画功能
                 isPainter = false;
             }
+            // 同步聊天消息
+            if(message.transferObjectName === 'chat') {
+                addChatContentToChatList(message);
+            }
 
             // console.log(message.toString());
         }
@@ -337,6 +341,39 @@ function sendWordConfirmMessage(username) {
     var confirm = new WordConfirm(username);
     webSocket.send(JSON.stringify(confirm));
 }
+
+/**
+ * 聊天内容消息
+ * @param username 用户名
+ * @param content 聊天内容
+ * @constructor
+ */
+function Chat(username, content) {
+    this.transferObjectName = 'chat';
+    this.username = username;
+    this.content = content;
+}
+
+/**
+ * 发送聊天内容消息
+ */
+$(function() {
+    // 输入框绑定回车事件
+    var chatTag = $('#chat-content');
+    chatTag.keypress(function(e) {
+       var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+       if (eCode === 13) {
+           var chat = new Chat(username, chatTag.val());
+           // 发送聊天消息
+           webSocket.send(JSON.stringify(chat));
+           // 清空输入框的值
+           chatTag.val("");
+           // 重定向输入框光标的位置
+           setCursorPosition(document.getElementById('chat-content'), 0);
+       }
+    });
+})
+
 
 
 

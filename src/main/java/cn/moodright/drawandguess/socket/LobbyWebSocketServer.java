@@ -4,6 +4,7 @@ import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import cn.moodright.drawandguess.entity.message.*;
 import cn.moodright.drawandguess.logic.GameProcess;
+import cn.moodright.drawandguess.logic.RoundTimer;
 import cn.moodright.drawandguess.logic.WordPickTimer;
 import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Component;
@@ -121,8 +122,18 @@ public class LobbyWebSocketServer {
                 log.info("用户：" + wordConfirmMessage.getUsername() + " 确认该单词");
             }
         }
-
-
+        // 接收聊天内容消息
+        if(baseMessage.getTransferObjectName().equals("chat")) {
+            ChatMessage chatMessage = JSON.parseObject(message, ChatMessage.class);
+            // 消息命中单词处理
+            if (chatMessage.getContent().equals(RoundTimer.getCurrentWord())) {
+                chatMessage.setContent("Bingo!");
+                message = JSON.toJSONString(chatMessage);
+            }
+            // 广播消息内容
+            broadcastMessage(message);
+            return;
+        }
         // 消息转发
         broadcastMessageExceptMyself(message);
     }
