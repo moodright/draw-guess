@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class LobbyController {
     private static final Log log = LogFactory.get();
-
     /**
      * 大厅页面
      * @param username 用户名

@@ -5,6 +5,7 @@ import cn.hutool.log.LogFactory;
 import cn.moodright.drawandguess.entity.message.PainterMessage;
 import cn.moodright.drawandguess.entity.message.WordMessage;
 import cn.moodright.drawandguess.entity.game.Settings;
+import cn.moodright.drawandguess.entity.message.WordPromptMessage;
 import cn.moodright.drawandguess.socket.LobbyWebSocketServer;
 import com.alibaba.fastjson.JSON;
 
@@ -29,6 +30,27 @@ public class GameProcess {
     private static int roundCount = 0;
     // 选择单词计时器
     private static WordPickTimer wordPickTimer = null;
+    // 游戏状态
+    private static boolean status = false;
+
+    /**
+     * 获取游戏状态
+     * @return 游戏状态
+     */
+    public static synchronized boolean getGameStatus() {
+        return status;
+    }
+
+    /**
+     * 重置游戏状态
+     */
+    public static synchronized void resetGameStatus() {
+        status = false;
+    }
+
+    public static synchronized void setGameStatus() {
+        status = true;
+    }
 
     /**
      * 获取单词计时器
@@ -90,8 +112,8 @@ public class GameProcess {
         String painterUsername = GameProcess.whoIsPainter();
         // 向绘画者发送该回合单词
         String word = sendWordToPainter(painterUsername);
-        // 更新该回合单词
-        RoundTimer.updateCurrentWord(word);
+        // 初始化当前回合资源
+        RoundTimer.initRoundResource(word, playerList.size());
         // 存储该引用用于接收到玩家确认单词消息时修改confirm变量
         wordPickTimer = new WordPickTimer(painterUsername);
         // 确认单词计时器开始计时
@@ -105,11 +127,13 @@ public class GameProcess {
      */
     public static String sendWordToPainter(String painterUsername) throws IOException {
         // 随机选择词典单词
-        String word = Settings.WORD[new Random().nextInt(Settings.WORD.length)];
+        String word = Settings.WORD_DICTIONARY.get(new Random().nextInt(Settings.WORD_DICTIONARY.size()));
         // 发送该单词至绘画者
         LobbyWebSocketServer.sendMessageToSpecifiedUser(
                 JSON.toJSONString(new WordMessage("word", painterUsername, word)),
                 painterUsername);
+        // 发送单词提示
+        LobbyWebSocketServer.broadcastMessage(JSON.toJSONString(new WordPromptMessage("wordPrompt", "serverSide", word.length())));
         return word;
     }
 
@@ -145,6 +169,8 @@ public class GameProcess {
      */
     public static void initGameResource() {
         log.info("初始化游戏资源");
+        // 修改游戏状态
+        setGameStatus();
         // 初始化用户名列表
         playerList = LobbyWebSocketServer.getUsernameList();
         // 初始化绘画者Map

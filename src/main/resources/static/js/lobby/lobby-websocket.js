@@ -78,6 +78,8 @@ function openWebSocket() {
                     // 绘画者
                     // 开启绘画功能
                     enablePaintingFunction();
+                    // 禁用输入框
+                    disableTextarea();
                 }else {
                     // 猜词者
                     // 关闭会话功能
@@ -86,8 +88,16 @@ function openWebSocket() {
             }
             // 同步接收的单词
             if(message.transferObjectName === 'word') {
+                var title = '轮到你作图了';
                 // 显示单词提示框
-                showWordAlert(message.word);
+                showWordAlert(message.word, title);
+                // 显示单词确认按钮
+                $('#word-confirm-button').css('display', 'block');
+            }
+            // 同步确认单词消息
+            if(message.transferObjectName === 'confirmWord') {
+                // 隐藏单词展示框
+                hideWordAlert();
             }
             // 同步其它用户上线信息
             if(message.transferObjectName === 'playerOnline') {
@@ -121,15 +131,6 @@ function openWebSocket() {
             if(message.transferObjectName === 'gameStop') {
                 enableReadyFunctionAfterGameStop();
             }
-            // 同步确认单词消息
-            if(message.transferObjectName === 'confirmWord') {
-                // 获取单词提示标签元素
-                var wordAlertTag = $('#word-alert');
-                // 获取遮罩层标签元素
-                var maskTag = $('.mask');
-                wordAlertTag.css('display', 'none');
-                maskTag.css('display', 'none');
-            }
             // 同步单词确认倒计时
             if(message.transferObjectName === 'wordPickCountDown') {
                 // 同步到倒计时标签
@@ -143,10 +144,51 @@ function openWebSocket() {
                 tools.css('visibility', 'visible');
                 // 关闭绘画功能
                 isPainter = false;
+                // 开启输入框
+                enableTextarea();
+                // 隐藏单词展示框
+                hideWordAlert();
             }
             // 同步聊天消息
             if(message.transferObjectName === 'chat') {
+                if(message.content === 'Bingo!') {
+                    playBingoMusicAlert();
+                    if(message.username === username) {
+                        // 禁用该用户的输入框
+                        disableTextarea();
+                    }
+                }
                 addChatContentToChatList(message);
+            }
+            // 同步重置回合消息
+            if(message.transferObjectName === 'resetRound') {
+                // 隐藏单词展示框
+                hideWordAlert();
+                // 开启输入框
+                enableTextarea();
+            }
+            // 同步展示单词
+            if(message.transferObjectName === 'wordDisplay') {
+                // 重置每回合倒计时信息
+                resetRoundCountDownTag();
+                // 重置单词提示框
+                resetWordPromptTag();
+                var title = '本回合的单词';
+                showWordAlert(message.word, title);
+                // 隐藏确认按钮
+                $('#word-confirm-button').css('display', 'none');
+            }
+            // 同步单词展示倒计时
+            if(message.transferObjectName === 'wordDisplayCountDown') {
+                updateWordPickCountDownTag(message.countDown);
+            }
+            // 同步每回合倒计时消息
+            if(message.transferObjectName === 'roundCountDown') {
+                updateRoundCountDownTag(message.countDown);
+            }
+            // 同步单词提示消息
+            if(message.transferObjectName === 'wordPrompt') {
+                updateWordPromptTag(message.length);
             }
 
             // console.log(message.toString());
@@ -363,6 +405,8 @@ $(function() {
     chatTag.keypress(function(e) {
        var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
        if (eCode === 13) {
+           // 清空换行符
+           chatTag.val(chatTag.val().replace("\n", ""));
            var chat = new Chat(username, chatTag.val());
            // 发送聊天消息
            webSocket.send(JSON.stringify(chat));

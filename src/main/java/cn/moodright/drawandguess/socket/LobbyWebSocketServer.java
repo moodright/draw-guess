@@ -2,6 +2,7 @@ package cn.moodright.drawandguess.socket;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
+import cn.moodright.drawandguess.config.LobbyInterceptor;
 import cn.moodright.drawandguess.entity.message.*;
 import cn.moodright.drawandguess.logic.GameProcess;
 import cn.moodright.drawandguess.logic.RoundTimer;
@@ -79,6 +80,9 @@ public class LobbyWebSocketServer {
             lobbyWebSocketMap.remove(username);
             // 连接数减一
             subOnlineCount();
+            // 拦截器验证list
+            log.info("拦截器验证list中用户被删除：" + username);
+            LobbyInterceptor.usernameSet.remove(username);
         }
         log.info("用户：" + username + " 退出, 当前在线人数为：" + getOnlineCount());
     }
@@ -90,7 +94,6 @@ public class LobbyWebSocketServer {
      */
     @OnMessage
     public void onMessage(Session session, String message) throws IOException {
-        log.info("用户：" + username + " 向服务器发送了信息：" + message);
         // 将message字段转换为基础消息对象
         BaseMessage baseMessage = JSON.parseObject(message, BaseMessage.class);
         // 接收玩家准备消息
@@ -100,8 +103,8 @@ public class LobbyWebSocketServer {
                 log.info("用户：" + username + " 已准备！");
                 // 玩家准备数量加一
                 GameProcess.addPlayerReadyCount();
-                // 游戏开始判断：准备人数大于0 且 准备人数与游戏在线人数相等 -> 游戏开始
-                if(GameProcess.getPlayerReadyCount() == getOnlineCount() && GameProcess.getPlayerReadyCount() > 0) {
+                // 游戏开始判断：准备人数大于1 且 准备人数与游戏在线人数相等 -> 游戏开始
+                if(GameProcess.getPlayerReadyCount() == getOnlineCount() && GameProcess.getPlayerReadyCount() > 1) {
                     // 广播游戏开始消息
                     broadcastMessage(JSON.toJSONString(new GameStartMessage("gameStart", "serverSide")));
                     // 游戏开始
@@ -129,6 +132,8 @@ public class LobbyWebSocketServer {
             if (chatMessage.getContent().equals(RoundTimer.getCurrentWord())) {
                 chatMessage.setContent("Bingo!");
                 message = JSON.toJSONString(chatMessage);
+                // 错误人数自减
+                RoundTimer.subFalseCount();
             }
             // 广播消息内容
             broadcastMessage(message);

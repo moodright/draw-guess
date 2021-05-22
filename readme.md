@@ -18,5 +18,14 @@
  - 游戏机制完善（选择单词计时、绘画功能控制）
 ## 2021/5/21
  - 游戏机制完善（实现聊天可视化）
-
+ - 实现了猜词正确音频提示功能
+ - 实现了单词展示定时器 drawandguess.logic.WordDisplayTimer
+ - 添加了拦截器，实现了简单的用户名、口令和拦截器校验 drawandguess.logic.LobbyInterceptor
+ - 实现了通过IO流来导入txt词汇文本
+## 2021/5/22
+ - 减少了不必要的日志记录
+ - 制作了游戏过程思路迭代图
+ - 添加了todo.md
+ - 添加了bug.md
+ - 本来想发布Beta版本的release，但测试后发现很多BUG，发布事宜暂缓
  

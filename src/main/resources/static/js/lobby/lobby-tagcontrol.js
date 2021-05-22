@@ -148,23 +148,36 @@ function confirmPaint() {
  * 显示单词提示框
  * @param word 提示的单词
  */
-function showWordAlert(word) {
+function showWordAlert(word, title) {
+    // 获取单词标题
+    var wordTitle = $('#word-title');
     // 获取单词内容元素
     var wordContentTag = $('#word');
     // 获取单词提示标签元素
     var wordAlertTag = $('#word-alert');
     // 获取遮罩层标签元素
     var maskTag = $('.mask');
+    wordTitle.text(title);
     wordContentTag.text(word);
     wordAlertTag.css('display', 'block');
     maskTag.css('display', 'block');
 }
 
+function hideWordAlert() {
+    // 获取单词提示标签元素
+    var wordAlertTag = $('#word-alert');
+    // 获取遮罩层标签元素
+    var maskTag = $('.mask');
+    wordAlertTag.css('display', 'none');
+    maskTag.css('display', 'none');
+}
+
+
+
 /**
  * 更新确认单词倒计时时间
  */
 function updateWordPickCountDownTag(time) {
-    console.log("========");
     var countDown = $('#time-left');
     countDown.text(time);
 }
@@ -255,3 +268,56 @@ function addChatContentToChatList(message) {
     chatList.scrollTop(chatList[0].scrollHeight);
 }
 
+/**
+ * 播放正确提示音
+ */
+function playBingoMusicAlert() {
+    var audio = document.getElementById('bingo');
+    // 重置声音资源
+    audio.load();
+    // 播放声音资源
+    audio.play();
+}
+
+/**
+ * 禁用输入框
+ */
+function disableTextarea() {
+    $('#chat-content').attr("disabled", "disabled");
+}
+
+/**
+ * 开启输入框
+ */
+function enableTextarea() {
+    $('#chat-content').removeAttr("disabled");
+}
+
+/**
+ * 更新每回合倒计时标签
+ */
+function updateRoundCountDownTag(time) {
+    var countDownTag = $('#countdown');
+    countDownTag.text(time);
+}
+
+/**
+ * 重置每回合倒计时
+ */
+function resetRoundCountDownTag() {
+    var countDownTag = $('#countdown');
+    countDownTag.text("--");
+}
+
+/**
+ * 更新每回合提示单词信息
+ */
+function updateWordPromptTag(length) {
+    var wordLengthTag = $('#word-length');
+    wordLengthTag.text(length);
+}
+
+function resetWordPromptTag() {
+    var wordLengthTag = $('#word-length');
+    wordLengthTag.text("-");
+}

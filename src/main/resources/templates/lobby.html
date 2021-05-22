@@ -75,11 +75,11 @@
         <div class="right-main">
             <div class="notification">
                 <div class="clock">
-                    <i class="fa fa-clock-o"></i><span id="countdown">60</span>
+                    <i class="fa fa-clock-o"></i><span id="countdown">--</span>
                 </div>
                 <div class="prompt">
                     <div class="word-type">词汇提示类型</div>
-                    <div class="word-length">两个字</div>
+                    <div class="word-length"><span id="word-length" style="color: #fc7b99"></span>个字</div>
                 </div>
             </div>
             <div id="chat-list" class="chat"></div>
@@ -95,9 +95,7 @@
     </div>
     <!-- 提示框 -->
     <div id="word-alert" class="alert">
-        <div class="title">
-            轮到你作图了
-        </div>
+        <div id="word-title"class="title"></div>
         <div class="content">
             <div id="word"></div>
             <div class="count-down">
@@ -105,10 +103,12 @@
             </div>
         </div>
         <div class="footer">
-            <div class="confirm-button" onclick="confirmPaint()">开始作图</div>
+            <div id="word-confirm-button" class="confirm-button" onclick="confirmPaint()">开始作图</div>
         </div>
     </div>
     <!-- 自定义遮罩层 -->
     <div class="mask"></div>
+    <!-- 音效资源 -->
+    <audio id="bingo" src="/music/bingo.mp3"></audio>
 </body>
 </html>

@@ -46,7 +46,7 @@ public class WordPickTimer extends TimerTask {
             e.printStackTrace();
         }
         // 计时结束
-        if( wordPickCountDown == 0 || confirm) {
+        if( wordPickCountDown == 0 || confirm || RoundTimer.getFalseCount() == 1) {
             log.info("玩家确认该单词，请开始绘画！");
             try {
                 LobbyWebSocketServer.sendMessageToSpecifiedUser(
